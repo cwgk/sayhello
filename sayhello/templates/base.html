@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+    <title>{% block title %}无双交流站{% endblock %}</title>
+    <link rel="icon" href="{{ url_for('static', filename='dt1.ico') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</head>
+<body>
+
+<main class="container p-2">
+    <header>
+        </div>
+        <h2 class="text-center">
+            <a class="text-success">大唐无双</a>
+            <small><small class="text-muted ">轻 交 流</small></small>
+            <button type="button" data-bs-toggle="collapse" data-bs-target="#demo"
+                    class="btn btn-primary btn-sm dropdown-toggle"></button>
+        </h2>
+    </header>
+
+    {% block content %}{% endblock %}
+
+    {% from "macros.html" import pager %}
+    {% if messages %}
+        {{ pager(messages) }}
+    {% endif %}
+
+    <footer class="text-center">
+        {% block footer %}
+            <small> &copy; 2021 <a>By Ray </a><a id="bottom" href="#" title="Go Top">&uarr;</a>
+            </small>
+        {% endblock %}
+    </footer>
+
+</main>
+
+<script>
+
+    function bSub(com_f) {
+        if (com_f.com.value == '') {
+            alert('请输入回复内容!');
+            com_f.com.focus();
+            return false;
+        }
+    }
+</script>
+
+{{ moment.include_moment(local_js=url_for('static', filename='js/moment-with-locales.min.js')) }}
+{{ moment.locale('zh-cn') }}
+</body>
+</html>

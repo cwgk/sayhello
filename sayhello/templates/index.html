@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% from 'bootstrap/form.html' import render_form %}
+
+
+{% block content %}
+    <div id="demo" class="collapse show">
+        <form class="hello-form" method="post">
+            {{ form.csrf_token }}
+            <div>
+                {{ form.name.label(class='text-muted') }} :
+                {{ form.name(class='form-control') }}
+            </div>
+            <div class="pt-2">
+                {{ form.body.label(class='text-muted') }} :
+                {{ form.body(class='form-control pt-0') }}
+            </div>
+            <div class="pt-1">
+                {{ form.submit(class='btn btn-primary') }}
+            </div>
+        </form>
+    </div>
+    <h6 class="pt-2">{{ messages.total }} 条留言
+        <small class="float-right">
+            <a href="#bottom" title="Go Bottom">&darr;</a>
+        </small>
+    </h6>
+    <div class="list-group ">
+        {% for item in messages.items %}
+            <div class="dropdown">
+                <a class="list-group-item list-group-item-action flex-column p-1" data-bs-toggle="dropdown"
+                   style="border-bottom: transparent">
+                    <div class="d-flex w-100 justify-content-between">
+                        <h6 class="mb-1 text-success">{{ item.name }}
+                            <small class="text-muted"> {{ t_bar(loop.revindex, messages.total, messages.pages,
+                         messages.page) }}楼</small>
+                            <small><small class="text-muted">  {{ item.iname }}</small></small>
+                        </h6>
+                        <small><small data-toggle="tooltip" data-placement="top"
+                               data-timestamp="{{ item.timestamp.strftime('%Y-%m-%dT%H:%M:%SZ') }}"
+                               data-delay="500">
+                            {{ moment(item.timestamp).fromNow(refresh=True) }}
+                        </small></small>
+                    </div>
+                    <p class="mb-1">{{ item.body }}</p>
+
+                </a>
+
+                <div class="dropdown-menu p-2" style="width: 75%">
+                    <div class="list-group">
+                        {% for com in comments %}
+                            {% if com.message_id == item.id %}
+                                <p class="text-primary">{{ com.iname }}: <small class="text-muted">
+                                    {{ com.body }}</small></p>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <form class="input-group" name="com_f" onSubmit="return bSub(this);"
+                          action="{{ url_for('input', m_id=item.id, cur_p=messages.page) }}" method="POST">
+                        <input type="text" name="com" class="form-control no-null" placeholder="输入回复内容">
+                        <div class="input-group-append">
+                            <button class="btn btn-success" type="submit">确定</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        {% endfor %}
+       <hr style="background-color: #987cb9;margin-top: 0;margin-bottom: 0px">
+    </div>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+
+{% block title %}500 Error{% endblock %}
+
+{% block content %}
+    <p class="text-center">服务器异常</p>
+{% endblock %}
+
+{% block footer %}
+    <a href="{{ url_for('index') }}">&larr; 返 回</a>
+{% endblock %}
